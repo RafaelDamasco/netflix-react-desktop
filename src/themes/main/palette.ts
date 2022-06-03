@@ -12,9 +12,16 @@ const border = {
   default: '#E0E0E0'
 }
 
+const message = {
+  success: '#198754',
+  error: '#E31A13',
+  warning: '#ffc720'
+}
+
 export const palette = {
   core,
   typography,
-  border
+  border,
+  message
 }
 

@@ -28,8 +28,12 @@ export default function Login() {
     async () => {
       try {
         const schema =  yup.object().shape({
-          email: yup.string().required().email(),
-          password: yup.string().required()
+          email: yup.string()
+          .required('E-mail é obrigatório')
+          .email('E-mail inválido'),
+          password: yup.string()
+          .required('Senha é obrigatório')
+          .min(6, 'A senha deve ter ao menos 6 caracteres')
         })
 
         await schema.validate(data)
@@ -61,7 +65,6 @@ export default function Login() {
             placeholder="Senha"
             onChange={handleChange}/>
           
-           
             <FormError message={error}></FormError>
           
             <Button onClick={handleSend}>Entrar</Button>

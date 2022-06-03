@@ -11,8 +11,6 @@ border-radius: ${props => props.theme.layout.border.small};
 background-color: ${props => props.theme.palette.core.primary};
 color: ${props => props.theme.palette.typography.primary};
 
-/* filter: ${props => props.theme.hover.filter.opacity}; */
-
 
 cursor: pointer;
 `
