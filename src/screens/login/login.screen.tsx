@@ -1,8 +1,11 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import * as yup from 'yup'
 import { Grid } from "@mui/material";
-import { Button, Input, Wrapper, Error, GlobalStyles } from "./login.styled";
+import {  Wrapper } from "./login.styled";
 
+import FormError from "../../components/form-error/form-error"
+import Input from "../../components/input/input"
+import Button from "../../components/button/button"
 
 export default function Login() {
   const [data, setData] = useState({
@@ -18,7 +21,7 @@ export default function Login() {
       [target.name]: target.value
     }))
   },
-    []
+    [setData]
   )
 
   const handleSend = useCallback(
@@ -30,7 +33,9 @@ export default function Login() {
         })
 
         await schema.validate(data)
+
         setError('')
+
       } catch (error: any) {
         setError(error.errors[0])
       }
@@ -39,7 +44,6 @@ export default function Login() {
 
   return (
     <>
-      <GlobalStyles/>
       <Wrapper 
         container 
         justifyContent='center' 
@@ -56,9 +60,10 @@ export default function Login() {
             name="password" 
             placeholder="Senha"
             onChange={handleChange}/>
-          {!!error && (
-            <Error>{error}</Error>
-          )}
+          
+           
+            <FormError message={error}></FormError>
+          
             <Button onClick={handleSend}>Entrar</Button>
         </Grid>
       </Wrapper>
