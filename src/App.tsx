@@ -11,10 +11,13 @@ import Login from './screens/login/login.screen';
 import { LOGIN_URL } from './screens/login/login.type';
 import { MOVIES_LIST_URL } from './screens/movies-list/movies-list.type';
 
+import store from './store/store/store';
+import { Provider } from 'react-redux';
 
 function App() {
   return (
     <>
+    <Provider store={store}>
       <GlobalStyles/>
       <ThemeProvider theme={theme}>
         <BrowserRouter>
@@ -24,6 +27,7 @@ function App() {
           </Routes>
         </BrowserRouter>
       </ThemeProvider>
+    </Provider>
     </>
   );
 }
