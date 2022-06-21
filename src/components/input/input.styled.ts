@@ -1,16 +1,16 @@
-import styled, { css } from "styled-components";
+import styled, { css } from 'styled-components';
 
 export const InputStyled = styled.input`
   width: 100%;
   padding: 8px;
   margin: 0 0 22px;
 
-  border: ${props => {
-    const { theme: { layout, palette } } = props
-    
-    return css `${layout.border.small} solid ${palette.border.default}`
+  border: ${(props) => {
+    const { theme: { layout, palette } } = props;
+
+    return css`${layout.border.small} solid ${palette.border.default}`;
   }};
 
 
-  border-radius: ${props => props.theme.layout.border.medium};
-`
+  border-radius: ${(props) => props.theme.layout.border.medium};
+`;

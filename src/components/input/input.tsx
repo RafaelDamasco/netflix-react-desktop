@@ -1,7 +1,19 @@
-import { InputStyled } from './input.styled'
+import React from 'react';
+import { InputStyled } from './input.styled';
+import { Props } from './input.type';
 
-export default function Input(props: any) {
+export default function Input({
+  type,
+  name,
+  placeholder,
+  onChange,
+} : Props) {
   return (
-    <InputStyled {...props} />
-  )
+    <InputStyled
+      type={type}
+      name={name}
+      placeholder={placeholder}
+      onChange={onChange}
+    />
+  );
 }
