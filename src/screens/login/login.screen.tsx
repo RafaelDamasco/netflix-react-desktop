@@ -10,9 +10,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import Input from 'components/input/input';
 import Button from 'components/button/button';
 import FormError from 'components/form-error/form-error';
-import { authenticated } from 'store/user/user.selector';
+import { tokenSelector } from 'store/user/user.selector';
 import userSlice from 'store/user/user.slice';
 import { Error } from 'types/yup';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { MOVIES_LIST_URL } from 'screens/movies-list/movies-list.type';
 import { Wrapper } from './login.styled';
 
 export default function Form() {
@@ -20,11 +22,12 @@ export default function Form() {
     email: '',
     password: '',
   });
-
   const [error, setError] = useState('');
 
   const dispatch = useDispatch();
-  const userAuthenticated = useSelector(authenticated);
+  const token = useSelector(tokenSelector);
+  const navigate = useNavigate();
+  const from = useLocation();
 
   const handleChange = useCallback(
     ({ target }: ChangeEvent<HTMLInputElement>) => {
@@ -36,31 +39,58 @@ export default function Form() {
     [setData],
   );
 
-  const handleSend = useCallback(async () => {
-    try {
-      const schema = yup.object().shape({
-        email: yup.string()
-          .required('E-mail é obrigatório')
-          .email('E-mail inválido'),
-        password: yup.string()
-          .required('Senha é obrigatório')
-          .min(6, 'A senha deve ter ao menos 6 caracteres'),
-      });
+  const resetError = useCallback(
+    (errorMessage: string) => {
+      setError(errorMessage);
+    },
+    [],
+  );
 
-      await schema.validate(data);
+  const handleSend = useCallback(
+    async () => {
+      try {
+        const schema = yup.object().shape({
+          email: yup.string()
+            .required('E-mail é obrigatório')
+            .email('E-mail inválido'),
+          password: yup.string()
+            .required('Senha é obrigatório')
+            .min(6, 'A senha deve ter ao menos 6 caracteres'),
+        });
 
-      setError('');
-      dispatch(userSlice.actions.setData({}));
-    } catch (yupError: any) {
-      setError((yupError as Error).errors[0]);
-    }
-  }, [data]);
+        await schema.validate(data);
+
+        resetError('');
+
+        dispatch(userSlice.actions.authentication(data));
+      } catch (yupError: unknown) {
+        setError((yupError as Error).errors[0]);
+      }
+    },
+    [data],
+  );
 
   useEffect(
     () => {
-      console.log(userAuthenticated);
+      if (token) {
+        navigate(MOVIES_LIST_URL, {
+          state: { from },
+        });
+      }
     },
-    [userAuthenticated],
+    [token],
+  );
+
+  useEffect(
+    () => {
+      const localToken = localStorage.getItem('USER_TOKEN_COOKIE');
+      if (localToken) {
+        dispatch(userSlice.actions.setData({
+          token: localToken,
+        }));
+      }
+    },
+    [],
   );
 
   return (
