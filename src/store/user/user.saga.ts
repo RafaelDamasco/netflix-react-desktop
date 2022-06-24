@@ -16,6 +16,8 @@ function* authentication(action: PayloadAction<AuthPayload>) {
   }
 }
 
-export default function* userSaga() {
-  yield takeLatest('user/authentication', authentication);
-}
+const userSaga = [
+  takeLatest('user/authentication', authentication);
+]
+
+export default userSaga

@@ -1,10 +1,7 @@
+import { Shows } from 'store/shows/shows.type';
 import { User } from 'store/user/user.type';
 
 export type Store = {
-  user: User
-};
-
-export type Action<Payload> = {
-  type: string,
-  payload: Payload
+  user: User,
+  shows: Shows
 };
