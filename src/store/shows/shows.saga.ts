@@ -23,7 +23,7 @@ function* getList() {
   } catch (e) {
     yield put(showsActions.setError('Error'));
   } finally {
-    yield put(showsActions.etSettings({ loading: false }));
+    yield put(showsActions.setSettings({ loading: false }));
   }
 }
 
