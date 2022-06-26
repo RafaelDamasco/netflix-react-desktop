@@ -9,4 +9,5 @@ export const Cover = styled.div<CoverProps>`
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+
 `;

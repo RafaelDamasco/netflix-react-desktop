@@ -10,11 +10,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import Input from 'components/input/input';
 import Button from 'components/button/button';
 import FormError from 'components/form-error/form-error';
-import { tokenSelector } from 'store/user/user.selector';
+import { errorSelector, tokenSelector } from 'store/user/user.selector';
 import userSlice from 'store/user/user.slice';
 import { Error } from 'types/yup';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { SHOWS_URL } from 'screens/shows/shows.type';
+import Logo from 'components/logo/logo';
 import { Wrapper } from './login.styled';
 
 export default function Form() {
@@ -26,6 +27,7 @@ export default function Form() {
 
   const dispatch = useDispatch();
   const token = useSelector(tokenSelector);
+  const userError = useSelector(errorSelector);
   const navigate = useNavigate();
   const from = useLocation();
 
@@ -84,6 +86,7 @@ export default function Form() {
   useEffect(
     () => {
       const localToken = localStorage.getItem('USER_TOKEN_COOKIE');
+
       if (localToken) {
         dispatch(userSlice.actions.setData({
           token: localToken,
@@ -98,7 +101,12 @@ export default function Form() {
       container
       justifyContent="center"
       alignContent="center"
+      flexDirection="column"
+      gap={10}
     >
+      <Grid>
+        <Logo width={230} />
+      </Grid>
       <Grid item xs={2}>
         <Input
           type="email"
@@ -113,7 +121,7 @@ export default function Form() {
           onChange={handleChange}
         />
 
-        <FormError message={error} />
+        <FormError message={error || userError} />
 
         <Button onClick={handleSend}>Entrar</Button>
       </Grid>

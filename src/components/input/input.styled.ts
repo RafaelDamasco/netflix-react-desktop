@@ -4,6 +4,8 @@ export const InputStyled = styled.input`
   width: 100%;
   padding: 8px;
   margin: 0 0 22px;
+  background-color: ${(props) => props.theme.palette.typography.primary};
+
 
   border: ${(props) => {
     const { theme: { layout, palette } } = props;
