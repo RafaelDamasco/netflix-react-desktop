@@ -10,6 +10,8 @@ import { GlobalStyles } from 'themes/main/global-styles';
 import ShowsList from 'screens/shows/shows.screen';
 import Login from 'screens/login/login.screen';
 import store from 'store/store/store';
+import { SHOW_URL } from 'screens/show/show.type';
+import Show from 'screens/show/show.screen';
 
 function App() {
   return (
@@ -18,7 +20,22 @@ function App() {
       <ThemeProvider theme={theme}>
         <Routes>
           <Route element={<Login />} path={LOGIN_URL} />
-          <Route element={<Guard><ShowsList /></Guard>} path={SHOWS_URL} />
+          <Route
+            element={(
+              <Guard>
+                <ShowsList />
+              </Guard>
+            )}
+            path={SHOWS_URL}
+          />
+          <Route
+            element={(
+              <Guard>
+                <Show />
+              </Guard>
+            )}
+            path={SHOW_URL}
+          />
         </Routes>
       </ThemeProvider>
     </Provider>
