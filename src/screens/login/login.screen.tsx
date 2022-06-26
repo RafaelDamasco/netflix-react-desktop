@@ -104,10 +104,22 @@ export default function Form() {
       flexDirection="column"
       gap={10}
     >
-      <Grid>
+      <Grid
+        item
+        xs={2}
+        container
+        alignContent="center"
+        justifyContent="center"
+      >
         <Logo width={230} />
       </Grid>
-      <Grid item xs={2}>
+      <Grid
+        item
+        xs={2}
+        container
+        alignContent="center"
+        justifyContent="center"
+      >
         <Input
           type="email"
           name="email"

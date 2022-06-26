@@ -8,7 +8,6 @@ import Header from 'components/header/header';
 
 export default function Shows() {
   const dispatch = useDispatch();
-
   const list = useSelector(listSelector);
   const myList = useSelector(myListSelector);
   const movies = list.MOVIE;

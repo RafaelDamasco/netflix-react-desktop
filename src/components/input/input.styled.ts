@@ -4,6 +4,7 @@ export const InputStyled = styled.input`
   width: 100%;
   padding: 8px;
   margin: 0 0 22px;
+  box-sizing: border-box;
   background-color: ${(props) => props.theme.palette.typography.primary};
 
 

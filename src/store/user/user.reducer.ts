@@ -4,7 +4,9 @@ import { Data, User } from 'store/user/user.type';
 
 const authentication = (_state: User, _action: PayloadAction<AuthPayload>) => {};
 
-const logoff = (_state: User, _action: PayloadAction<AuthPayload>) => {};
+const logoff = (state: User, action: PayloadAction <Data>) => {
+  state.data = action.payload;
+};
 
 const setData = (state: User, action: PayloadAction <Data>) => {
   state.data = action.payload;

@@ -1,13 +1,23 @@
 import React, { useState } from 'react';
 import {
-  Divider, Grid, SwipeableDrawer,
+  Divider, Grid, IconButton, SwipeableDrawer,
 } from '@mui/material';
 import Logo from 'components/logo/logo';
 import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
+import AvatarIcon from 'components/avatar/avatar';
+// import userSlice from 'store/user/user.slice';
+// import { useDispatch } from 'react-redux';
 
 export default function Header() {
-  const [open, setOpen] = useState(true);
+  // const handleClick = useCallback(
+  //   () => {
+  //     useDispatch(userSlice.actions.logoff());
+  //   },
+  //   [],
+  // );
+
+  const [open, setOpen] = useState(false);
   return (
     <Grid
       container
@@ -15,23 +25,25 @@ export default function Header() {
       alignContent="center"
       alignItems="center"
     >
-      <MenuIcon
-        fontSize="large"
-        color="primary"
-        onClick={() => setOpen(true)}
-      />
+      <IconButton aria-label="menu" color="primary">
+        <MenuIcon
+          fontSize="large"
+          color="primary"
+          onClick={() => setOpen(true)}
+        />
+      </IconButton>
       <Logo width={230} />
-      <MenuIcon fontSize="large" color="primary" />
+      <AvatarIcon>R</AvatarIcon>
       <SwipeableDrawer
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
         open={open}
         anchor="left"
       >
-        <Grid container alignItems="center" gap={1}>
+        <IconButton aria-label="menu" color="primary">
           <LogoutIcon />
           Sair da conta
-        </Grid>
+        </IconButton>
         <Divider />
       </SwipeableDrawer>
     </Grid>

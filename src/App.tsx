@@ -7,7 +7,7 @@ import { LOGIN_URL } from 'screens/login/login.type';
 import { SHOWS_URL } from 'screens/shows/shows.type';
 import theme from 'themes/main/theme';
 import { GlobalStyles } from 'themes/main/global-styles';
-import ShowsList from 'screens/shows/shows';
+import ShowsList from 'screens/shows/shows.screen';
 import Login from 'screens/login/login.screen';
 import store from 'store/store/store';
 
