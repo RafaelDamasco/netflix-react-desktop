@@ -1,3 +1,4 @@
+import Header from 'components/header/header';
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -12,6 +13,6 @@ export default function Show() {
   );
 
   return (
-    <p>Hello!</p>
+    <Header />
   );
 }
