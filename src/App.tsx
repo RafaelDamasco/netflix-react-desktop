@@ -1,34 +1,44 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-
+import { Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
-import theme from './themes/main/theme'
-import { GlobalStyles } from './themes/main/global-styles'
-
-import MoviesList from './screens/movies-list/movies-list';
-import Login from './screens/login/login.screen';
-
-import { LOGIN_URL } from './screens/login/login.type';
-import { MOVIES_LIST_URL } from './screens/movies-list/movies-list.type';
-
-import store from './store/store/store';
 import { Provider } from 'react-redux';
+import Guard from 'components/guard/guard';
+import { LOGIN_URL } from 'screens/login/login.type';
+import { SHOWS_URL } from 'screens/shows/shows.type';
+import theme from 'themes/main/theme';
+import { GlobalStyles } from 'themes/main/global-styles';
+import ShowsList from 'screens/shows/shows.screen';
+import Login from 'screens/login/login.screen';
+import store from 'store/store/store';
+import { SHOW_URL } from 'screens/show/show.type';
+import Show from 'screens/show/show.screen';
 
 function App() {
   return (
-    <>
     <Provider store={store}>
-      <GlobalStyles/>
+      <GlobalStyles />
       <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <Routes>
-            <Route element={<Login/>} path={LOGIN_URL} />
-            <Route element={<MoviesList />} path={MOVIES_LIST_URL} />
-          </Routes>
-        </BrowserRouter>
+        <Routes>
+          <Route element={<Login />} path={LOGIN_URL} />
+          <Route
+            element={(
+              <Guard>
+                <ShowsList />
+              </Guard>
+            )}
+            path={SHOWS_URL}
+          />
+          <Route
+            element={(
+              <Guard>
+                <Show />
+              </Guard>
+            )}
+            path={SHOW_URL}
+          />
+        </Routes>
       </ThemeProvider>
     </Provider>
-    </>
   );
 }
 

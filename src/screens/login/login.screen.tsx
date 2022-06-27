@@ -1,75 +1,142 @@
-import { useCallback, useState } from "react";
-import * as yup from 'yup'
-import { Grid } from "@mui/material";
-import {  Wrapper } from "./login.styled";
+import React, {
+  ChangeEvent,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
+import { Grid } from '@mui/material';
+import * as yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
+import Input from 'components/input/input';
+import Button from 'components/button/button';
+import FormError from 'components/form-error/form-error';
+import { errorSelector, tokenSelector } from 'store/user/user.selector';
+import userSlice from 'store/user/user.slice';
+import { Error } from 'types/yup';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { SHOWS_URL } from 'screens/shows/shows.type';
+import Logo from 'components/logo/logo';
+import { Wrapper } from './login.styled';
 
-import FormError from "../../components/form-error/form-error"
-import Input from "../../components/input/input"
-import Button from "../../components/button/button"
-
-export default function Login() {
+export default function Form() {
   const [data, setData] = useState({
-    email: "",
-    password: ""
-  })
+    email: '',
+    password: '',
+  });
+  const [error, setError] = useState('');
 
-  const [error, setError] = useState('')
+  const dispatch = useDispatch();
+  const token = useSelector(tokenSelector);
+  const userError = useSelector(errorSelector);
+  const navigate = useNavigate();
+  const from = useLocation();
 
-  const handleChange = useCallback(({target} : any) => {
-    setData(prevData => ({
-      ...prevData,
-      [target.name]: target.value
-    }))
-  },
-    [setData]
-  )
+  const handleChange = useCallback(
+    ({ target }: ChangeEvent<HTMLInputElement>) => {
+      setData((prevData) => ({
+        ...prevData,
+        [target.name]: target.value,
+      }));
+    },
+    [setData],
+  );
+
+  const resetError = useCallback(
+    (errorMessage: string) => {
+      setError(errorMessage);
+    },
+    [],
+  );
 
   const handleSend = useCallback(
     async () => {
       try {
-        const schema =  yup.object().shape({
+        const schema = yup.object().shape({
           email: yup.string()
-          .required('E-mail é obrigatório')
-          .email('E-mail inválido'),
+            .required('E-mail é obrigatório')
+            .email('E-mail inválido'),
           password: yup.string()
-          .required('Senha é obrigatório')
-          .min(6, 'A senha deve ter ao menos 6 caracteres')
-        })
+            .required('Senha é obrigatório')
+            .min(6, 'A senha deve ter ao menos 6 caracteres'),
+        });
 
-        await schema.validate(data)
+        await schema.validate(data);
 
-        setError('')
+        resetError('');
 
-      } catch (error: any) {
-        setError(error.errors[0])
+        dispatch(userSlice.actions.authentication(data));
+      } catch (yupError: unknown) {
+        setError((yupError as Error).errors[0]);
       }
-    }, [data]
-  )
+    },
+    [data],
+  );
+
+  useEffect(
+    () => {
+      if (token) {
+        navigate(SHOWS_URL, {
+          state: { from },
+        });
+      }
+    },
+    [token],
+  );
+
+  useEffect(
+    () => {
+      const localToken = localStorage.getItem('USER_TOKEN_COOKIE');
+
+      if (localToken) {
+        dispatch(userSlice.actions.setData({
+          token: localToken,
+        }));
+      }
+    },
+    [],
+  );
 
   return (
-    <>
-      <Wrapper 
-        container 
-        justifyContent='center' 
-        alignContent='center'
-        >
-        <Grid item xs={2}>
-          <Input 
-            type="email" 
-            name="email" 
-            placeholder="E-mail"
-            onChange={handleChange}/>
-          <Input 
-            type="password" 
-            name="password" 
-            placeholder="Senha"
-            onChange={handleChange}/>
-          
-            <FormError message={error}></FormError>
-          
-            <Button onClick={handleSend}>Entrar</Button>
-        </Grid>
-      </Wrapper>
-    </>
-  )
+    <Wrapper
+      container
+      justifyContent="center"
+      alignContent="center"
+      flexDirection="column"
+      gap={10}
+    >
+      <Grid
+        item
+        xs={2}
+        container
+        alignContent="center"
+        justifyContent="center"
+      >
+        <Logo width={230} />
+      </Grid>
+      <Grid
+        item
+        xs={2}
+        container
+        alignContent="center"
+        justifyContent="center"
+      >
+        <Input
+          type="email"
+          name="email"
+          placeholder="E-mail"
+          onChange={handleChange}
+        />
+        <Input
+          type="password"
+          name="password"
+          placeholder="Senha"
+          onChange={handleChange}
+        />
+
+        <FormError message={error || userError} />
+
+        <Button onClick={handleSend}>Entrar</Button>
+      </Grid>
+    </Wrapper>
+  );
 }
