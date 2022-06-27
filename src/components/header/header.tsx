@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   Divider, Grid, IconButton, SwipeableDrawer,
 } from '@mui/material';
@@ -6,16 +6,18 @@ import Logo from 'components/logo/logo';
 import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AvatarIcon from 'components/avatar/avatar';
-// import userSlice from 'store/user/user.slice';
-// import { useDispatch } from 'react-redux';
+import userSlice from 'store/user/user.slice';
+import { useDispatch } from 'react-redux';
 
 export default function Header() {
-  // const handleClick = useCallback(
-  //   () => {
-  //     useDispatch(userSlice.actions.logoff());
-  //   },
-  //   [],
-  // );
+  const dispatch = useDispatch();
+
+  const handleClick = useCallback(
+    () => {
+      dispatch(userSlice.actions.logoff());
+    },
+    [],
+  );
 
   const [open, setOpen] = useState(false);
   return (
@@ -40,7 +42,7 @@ export default function Header() {
         open={open}
         anchor="left"
       >
-        <IconButton aria-label="menu" color="primary">
+        <IconButton onClick={handleClick} aria-label="menu" color="primary">
           <LogoutIcon />
           Sair da conta
         </IconButton>
